@@ -30,12 +30,17 @@ module.exports = {
     clientSecret: 'SECRET_KEY',
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
-  emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+  venmo: {
+    clientID: '1839',
+    clientSecret: 'jbpXXbJk8ttHY3JwFJaK5VGrwExE85jW',
+    callbackURL: 'http://127.0.0.1:3000/auth/venmo/callback'
+  },
+  emailFrom: 'none@gmail.com', // sender address like ABC <abc@example.com>
   mailer: {
-    service: 'SERVICE_PROVIDER',
+    service: 'none',
     auth: {
-      user: 'EMAIL_ID',
-      pass: 'PASSWORD'
+      user: 'none@gmail.com',
+      pass: '!'
     }
   }
 };

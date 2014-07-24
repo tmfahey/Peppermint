@@ -63,14 +63,18 @@ var UserSchema = new Schema({
     type: String,
     default: 'local'
   },
+  access_token: String,
+  refresh_token: String,
   salt: String,
+  balance: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   facebook: {},
   twitter: {},
   github: {},
   google: {},
-  linkedin: {}
+  linkedin: {},
+  venmo: {}
 });
 
 /**

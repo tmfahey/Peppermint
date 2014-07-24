@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
   GitHubStrategy = require('passport-github').Strategy,
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   LinkedinStrategy = require('passport-linkedin').Strategy,
+  VenmoStrategy = require('passport-venmo'),
   User = mongoose.model('User'),
   config = require('meanio').loadConfig();
 
@@ -26,6 +27,49 @@ module.exports = function(passport) {
       done(err, user);
     });
   });
+
+
+
+  // Use the VenmoStrategy
+// Strategies in Passport require a 'verify' function, which
+// is the anonymous function we define as the second parameter
+// of passport.use
+// The 'verify' function accepts an accessToken, refreshToken,
+// a 'venmo' object containing an authorized user's information
+// and invoke callback function with the user object.
+  passport.use(new VenmoStrategy({
+      clientID: config.venmo.clientID,
+      clientSecret: config.venmo.clientSecret,
+      callbackURL: config.venmo.callbackURL
+    },
+    function(accessToken, refreshToken, venmo, done) {
+      User.findOne({
+          'venmo.id': venmo.id
+      }, function(err, user) {
+          if (err) {
+              return done(err);
+          }
+          if(user){
+            return done(err, user);
+          }
+          user = new User({
+              name: venmo.displayName,
+              username: venmo.username,
+              email: venmo.email,
+              provider: 'venmo',
+              venmo: venmo._json,
+              balance: venmo.balance,
+              access_token: accessToken,
+              refresh_token: refreshToken,
+              roles: ['authenticated']
+          });
+          user.save(function(err) {
+            if (err) console.log(err);
+            return done(err, user);
+          });
+      });
+    }
+  ));
 
   // Use local strategy
   passport.use(new LocalStrategy({
@@ -145,6 +189,7 @@ module.exports = function(passport) {
       });
     }
   ));
+
 
   // Use google strategy
   passport.use(new GoogleStrategy({

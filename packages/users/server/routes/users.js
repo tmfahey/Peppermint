@@ -101,4 +101,17 @@ module.exports = function(MeanUser, app, auth, database, passport) {
       failureRedirect: '#!/login'
     }), users.authCallback);
 
+
+  // Setting the venmo oauth routes
+  app.route('/auth/venmo')
+    .get(passport.authenticate('venmo', {
+      failureRedirect: '#!/login',
+      scope: ['make_payments', 'access_feed', 'access_profile', 'access_email', 'access_phone', 'access_balance', 'access_friends']
+   }), users.signin);
+
+  app.route('/auth/venmo/callback')
+    .get(passport.authenticate('venmo', {
+      failureRedirect: '#!/login',
+    }), users.authCallback);
+
 };
