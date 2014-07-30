@@ -1,26 +1,26 @@
 'use strict';
 
-// The Package is past automatically as first parameter
-module.exports = function(Payments, app, auth, database) {
+var payments = require('../controllers/payments');
 
-    app.get('/payments/example/anyone', function(req, res, next) {
-        res.send('Anyone can access this');
-    });
+// Article authorization helpers
 
-    app.get('/payments/example/auth', auth.requiresLogin, function(req, res, next) {
-        res.send('Only authenticated users can access this');
-    });
+var hasAuthorization = function(req, res, next) {
+  if (!req.user.isAdmin && req.member.user.id !== req.user.id) {
+    return res.send(401, 'User is not authorized');
+  }
+  next();
+};
 
-    app.get('/payments/example/admin', auth.requiresAdmin, function(req, res, next) {
-        res.send('Only users with Admin role can access this');
-    });
+module.exports = function(Members, app, auth) {
 
-    app.get('/payments/example/render', function(req, res, next) {
-        Payments.render('index', {
-            package: 'payments'
-        }, function(err, html) {
-            //Rendering a view from the Package server/views
-            res.send(html);
-        });
-    });
+  app.route('/payments')
+    .get(auth.requiresLogin, payments.all, hasAuthorization)
+    .post(auth.requiresLogin, payments.create);/*
+  app.route('/payments/:paymentId')
+    .get(payments.show)
+    .put(auth.requiresLogin, hasAuthorization, payments.update)
+    .delete(auth.requiresLogin, hasAuthorization, payments.destroy);
+
+  // Finish with setting up the articleId param
+  app.param('paymentId', payments.member);*/
 };

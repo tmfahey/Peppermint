@@ -1,53 +1,89 @@
-<div class="" data-ng-controller="PaymentsController">
-	<h1>Request Payments</h1>
-	<h3><img src="/payments/assets/img/logo.png" /></h3>
-	</br>
-	<p class="alert alert-info">You can find your package in /packages/payments</p>
-	</br>
-	<p class="alert alert-warning">MEAN versions prior to 0.3.2 will be in /node_modules/payments</p>
-	</br>
-	<h3><a href="http://www.mean.io/#!/docs">Documentation</a></h3>
-	</br>
-	<p>Taylor Notes:<br>
-		Get current user information by making GET request to https://api.venmo.com/v1/me?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
-		Get users friends by making GET request to https://api.venmo.com/v1/users/1088551785594880949/friends?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
-		Sanboxx URL: https://sandbox-api.venmo.com/v1<br>
-		Sandbox account: user id 145434160922624933, email "venmo@venmo.com" and phone "15555555555"<br>
-		response after charge:<br>
-		{
-		  "data":  {
-		    "balance": "0.04",
-		    "payment":  {
-		      "status": "pending",
-		      "refund": null,
-		      "medium": "api",
-		      "date_completed": null,
-		      "target":  {
-		        "phone": null,
-		        "type": "email",
-		        "email": "fahey085@gmail.com",
-		        "user": null
-		      },
-		      "audience": "private",
-		      "actor":  {
-		        "username": "taylor-fahey",
-		        "first_name": "Taylor",
-		        "last_name": "Fahey",
-		        "display_name": "Taylor Fahey",
-		        "about": "No Short Bio",
-		        "profile_picture_url": "https://graph.facebook.com/100000019202462/picture?type=square",
-		        "id": "1435218686771200177",
-		        "date_joined": "2014-06-04T05:23:20"
-		      },
-		      "note": "frat",
-		      "amount": 0.1,
-		      "fee": null,
-		      "action": "charge",
-		      "date_created": "2014-07-22T17:45:34.243000",
-		      "id": "1470381502175904366"
-		    }
-		  }
-		}
 
-	</p>
+<!--
+NOTES:
+			Get current user information by making GET request to https://api.venmo.com/v1/me?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
+			Get users friends by making GET request to https://api.venmo.com/v1/users/1088551785594880949/friends?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
+			Sanboxx URL: https://sandbox-api.venmo.com/v1<br>
+			Sandbox account: user id 145434160922624933, email "venmo@venmo.com" and phone "15555555555"<br>
+			response after charge:<br>
+			{
+			  "data":  {
+			    "balance": "0.04",
+			    "payment":  {
+			      "status": "pending",
+			      "refund": null,
+			      "medium": "api",
+			      "date_completed": null,
+			      "target":  {
+			        "phone": null,
+			        "type": "email",
+			        "email": "fahey085@gmail.com",
+			        "user": null
+			      },
+			      "audience": "private",
+			      "actor":  {
+			        "username": "taylor-fahey",
+			        "first_name": "Taylor",
+			        "last_name": "Fahey",
+			        "display_name": "Taylor Fahey",
+			        "about": "No Short Bio",
+			        "profile_picture_url": "https://graph.facebook.com/100000019202462/picture?type=square",
+			        "id": "1435218686771200177",
+			        "date_joined": "2014-06-04T05:23:20"
+			      },
+			      "note": "frat",
+			      "amount": 0.1,
+			      "fee": null,
+			      "action": "charge",
+			      "date_created": "2014-07-22T17:45:34.243000",
+			      "id": "1470381502175904366"
+			    }
+			  }
+			}
+			</p>
+-->
+<div data-ng-controller="PaymentsController">
+	<div class="row">
+		<form name="paymentForm" ng-model"paymentForm" data-ng-submit="requestPayment(paymentForm.$valid)" class="col-md-6" data-ng-controller="MembersController" data-ng-init="find()" validate>
+			<div class="row">
+					<h1>Request Payments</h1>
+			</div>
+			<div class="row" ng-show="error">
+				<p class="col-md-11">
+					{{error}}
+				</p>
+			</div>
+			<div class="row" ng-show="success">
+				<p class="col-md-11">
+					{{success}}
+				</p>
+			</div>
+			<div class="row">
+				<h4>Request a payment from</h4>
+				<select class="col-md-11"
+		              ng-options="member as member.first_name+' '+member.last_name for member in members"
+		              ng-model="payment.member" required>
+		     	</select>
+		    </div>
+	     	<div class="row">
+	     		<h4>Payment Amount:</h4>
+	     		<input class="col-md-11" type="text" ng-model="payment.amount" required>
+		    </div>
+		    <div class="row">
+		     	<h4>Note:</h4>
+		     	<textarea class="col-md-11" type="text" ng-model="payment.note" required></textarea>
+			</div>
+			<div class="row">
+				<br>
+				<button class="btn btn-info" type="submit">Request Payment</button>
+			</div>
+			{{user}}
+		</form>
+		<div class="col-md-6">
+			<div class="row">
+				<h1>Payment Requests</h1>
+			</div>
+		</div>
+	</div>
+	
 </div>

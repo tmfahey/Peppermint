@@ -1,32 +1,77 @@
 'use strict';
 
-angular.module('mean.payments').controller('PaymentsController', ['$scope', 'Global', 'Payments',
-    function($scope, Global, Payments) {
+angular.module('mean.payments').controller('PaymentsController', ['$scope', '$http', 'Global', 'Payments',
+    function($scope, $http, $rootScope, Global, Payments) {
         $scope.global = Global;
         $scope.package = {
             name: 'payments'
         };
-        $scope.users=[
-        {	'_id' : '53cd9acbf76ffa5f1c646c74', 
-        	'name' : 'Taylor Fahey', 
-        	'username' : 'taylor-fahey',
-        	'email' : 'tmfahey@wisc.edu', 
-        	'venmo' : { 
-        	 	'date_joined' : '2014-06-04T05:23:20', 'id' : '1435218686771200177', 'trust_request' : { 'status' : null },
-        	 	'friend_request' : { 'status' : null }, 'profile_picture_url' : 'https://graph.facebook.com/100000019202462/picture?type=square',
-        	 	'phone' : '19522219775', 'email' : 'tmfahey@wisc.edu', 'about' : 'No Short Bio', 'friends_count' : 15, 'is_friend' : false,
-        	    'display_name' : 'Taylor Fahey', 'last_name' : 'Fahey', 'first_name' : 'Taylor', 'username' : 'taylor-fahey'
-        	},
-        	'balance' : '61.04',
-        	'access_token' : 'aV2DestL7PwN6WZHgdg6mExfuaSjmeeh',
-        	'refresh_token' : 'nsnB2HHEWDLgjxbpjA3aYryY3cNJUycA',
-        	'provider' : 'venmo',
-        	'roles' : [ 'authenticated' ],
-        	'__v' : 0,
-        	'resetPasswordExpires' : '2014-07-22T17:41:42.251Z',
-        	'resetPasswordToken' : '4473c7f4884ee47a92a4b456a7fc94211ea8a021'
-        } 
-        ];
+        //get user login data
+        $http({
+            method: 'GET',
+            url: '/users/me',
+        }).success(function(data, status, headers, config) {
+            $scope.data = data;
+            $scope.status = status;
+            console.log($scope.status);
+            console.log($scope.data);
+
+            $http({
+            method: 'GET',
+            url: '/payments',
+            params: {access_token: $scope.data.access_token}
+            }).success(function(data, status, headers, config) {
+                $scope.payments = data;
+                $scope.status = status;
+                console.log($scope.status);
+                console.log($scope.payments);
+            });
+        });
+
+
+        $scope.requestPayment = function(isValid){
+            if(isValid){
+                console.log($scope.$$childHead);
+                var postData = {
+                    access_token: $scope.data.access_token,
+                    amount : this.payment.amount,
+                    note : this.payment.note,
+                    audience: 'private'
+                };
+                if(this.payment.member.phone !== '')
+                    postData.phone = this.payment.member.phone;
+                else if(this.payment.member.email !== '')
+                    postData.email = this.payment.member.email;
+
+                if(this.payment.member.email === null && this.payment.member.phone === null){
+                    //invalid member
+                    console.log('member has neither a valid phone nor email\n\r');
+                }else{
+                    $http({
+                        url: '/payments',
+                        method: 'POST',
+                        params: postData,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).
+                    success(function(data, status, headers, config) {
+                        $scope.success = 'Payment Request Successful';
+                        $scope.error = '';
+                        $scope.$$childHead.payment = '';
+                        console.log(data.data.payment);
+                    }).
+                    error(function(data, status, headers, config) {
+                        $scope.error = data.error.message;
+                    });
+
+                }
+            }else{
+                //server side invalid
+                console.log('invalid');
+            }
+
+        };
+
+
 
 
     }
