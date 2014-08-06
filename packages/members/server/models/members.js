@@ -20,14 +20,19 @@ var MemberSchema = new Schema({
   },
   phone: {
     type: String,
+    default: null
   },
   email: {
     type: String,
+    default: null
   },
-  payment_ids: [String],
   created: {
     type: Date,
     default: Date.now
+  },
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
   }
 });
 

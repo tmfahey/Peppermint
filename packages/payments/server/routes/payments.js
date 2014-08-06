@@ -11,16 +11,26 @@ var hasAuthorization = function(req, res, next) {
   next();
 };
 
-module.exports = function(Members, app, auth) {
+module.exports = function(Payments, app, auth) {
 
   app.route('/payments')
     .get(auth.requiresLogin, payments.all, hasAuthorization)
-    .post(auth.requiresLogin, payments.create);/*
-  app.route('/payments/:paymentId')
-    .get(payments.show)
-    .put(auth.requiresLogin, hasAuthorization, payments.update)
-    .delete(auth.requiresLogin, hasAuthorization, payments.destroy);
+    .post(auth.requiresLogin, payments.create);
+  app.route('/payments/:payId')
+    .get(auth.requiresLogin, payments.getPayment, hasAuthorization);
 
-  // Finish with setting up the articleId param
-  app.param('paymentId', payments.member);*/
+  app.route('/paymentdb')
+    .get(auth.requiresLogin, payments.grabAll, hasAuthorization)
+    .post(auth.requiresLogin, payments.save, hasAuthorization);
+  
+  app.route('/paymentdb/:payId')
+    .delete(auth.requiresLogin, payments.destroy, hasAuthorization);
+
+  app.route('/paymentHook')
+    .get(payments.hookValidate);
+
+
+
+// Finish with setting up the paymentId param
+  app.param('payId', payments.payment);
 };

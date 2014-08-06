@@ -44,26 +44,34 @@ NOTES:
 -->
 <div data-ng-controller="PaymentsController">
 	<div class="row">
-		<form name="paymentForm" ng-model"paymentForm" data-ng-submit="requestPayment(paymentForm.$valid)" class="col-md-6" data-ng-controller="MembersController" data-ng-init="find()" validate>
+		<form name="paymentForm" ng-model"paymentForm" data-ng-submit="requestPayment(msMembers)" class="col-md-6" data-ng-controller="MembersController" data-ng-init="find()" validate>
 			<div class="row">
 					<h1>Request Payments</h1>
 			</div>
-			<div class="row" ng-show="error">
+			<div class="row error" ng-show="error">
 				<p class="col-md-11">
 					{{error}}
 				</p>
 			</div>
-			<div class="row" ng-show="success">
+			<div class="row success" ng-repeat="suc in success" ng-show="success">
 				<p class="col-md-11">
-					{{success}}
+					{{suc}}
 				</p>
 			</div>
 			<div class="row">
 				<h4>Request a payment from</h4>
-				<select class="col-md-11"
+				<div
+				    multi-select
+				    input-model="msMembers"
+				    button-label="name"
+				    item-label="name"
+				    tick-property="ticked"
+				>
+				</div>
+				<!--<select class="col-md-11"
 		              ng-options="member as member.first_name+' '+member.last_name for member in members"
 		              ng-model="payment.member" required>
-		     	</select>
+		     	</select>-->
 		    </div>
 	     	<div class="row">
 	     		<h4>Payment Amount:</h4>
@@ -79,10 +87,79 @@ NOTES:
 			</div>
 			{{user}}
 		</form>
-		<div class="col-md-6">
+		<div class="col-md-6" data-ng-init="findPayments()">
 			<div class="row">
 				<h1>Payment Requests</h1>
 			</div>
+			<div class="row" ng-repeat="payment in payments">
+				<div class="col-md-12 payment {{payment.status}}" ng-click="show=!show" style="cursor:pointer;">
+					{{payment.date_created | date:'MM/dd/yyyy'}} : {{payment.name}} - ${{payment.amount}}
+				</div>
+				<div ng-show="show" ng-click="show=false" class="seeMore">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Member Name:
+						</div>
+						<div class="col-md-8">
+							{{payment.name}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Type:
+						</div>
+						<div class="col-md-8">
+							{{payment.action}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Amount:
+						</div>
+						<div class="col-md-8">
+							{{payment.amount}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Created on:
+						</div>
+						<div class="col-md-8">
+							{{payment.date_created | date:'MM/dd/yyyy @ h:mma'}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Status:
+						</div>
+						<div class="col-md-8">
+							{{payment.status}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							Note:
+						</div>
+						<div class="col-md-8">
+							{{payment.note}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-1">
+							<button class="btn btn-info">Remind</button>
+						</div>
+						<div class="col-md-8">
+							<button class="btn btn-danger" ng-click="deletePayment(payment)">Delete</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<pre>{{payment|json}}</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 	

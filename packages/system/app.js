@@ -31,5 +31,27 @@ System.register(function(app, auth, database) {
   // Adding robots and humans txt
   app.use(express.static(__dirname + '/public/assets/static'));
 
+  System.menus.add({
+    title: 'Dashboard',
+    link: 'home',
+    roles: ['authenticated'],
+    menu: 'main',
+  });
+  System.menus.add({
+    title: 'Members',
+    link: 'members',
+    roles: ['authenticated'],
+    menu: 'main',
+  });
+
+  System.menus.add({
+      title: 'Request Payments',
+      link: 'payments',
+      roles: ['authenticated'],
+      menu: 'main',
+  });
+
+
+
   return System;
 });

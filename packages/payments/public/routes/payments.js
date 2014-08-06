@@ -3,7 +3,7 @@
 angular.module('mean.payments').config(['$stateProvider', '$httpProvider',
     function($stateProvider, $httpProvider) {
         $stateProvider.state('payments', {
-            url: '/payments/example',
+            url: '/payments/',
             templateUrl: 'payments/views/index.html'
         });
         $httpProvider.defaults.useXDomain = true;

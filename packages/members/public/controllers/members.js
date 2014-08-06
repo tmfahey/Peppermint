@@ -8,12 +8,16 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
         };
 
         $scope.updateMember = function(member){
+          if(member.phone === '')
+            member.phone = null;
                         
             member.$update(function() {
               //repopulate
               $scope.find();
-                member.edit = false;
-                console.log(member);
+              member.edit = false;
+              $scope.existError = '';
+            }, function(error){
+              $scope.existError = error.data.error;
             });
 
         };
@@ -30,8 +34,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
             $scope.newMember = '';
         };
 
-        $scope.create = function(isValid) {
-          if (isValid) {
+        $scope.create = function() {
             var member = new Members({
               first_name: this.first_name,
               last_name: this.last_name,
@@ -41,19 +44,29 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
             member.$save(function(response) {
               //repopulate members with a find
               $scope.find();
-            });
-            this.first_name = '';
-            this.last_name = '';
-            this.email = '';
-            this.phone = '';
-          } else {
-            $scope.submitted = true;
-          }
+              $scope.first_name = '';
+              $scope.last_name = '';
+              $scope.email = '';
+              $scope.phone = '';  
+              $scope.error = '';
+            }, function(error){
+              $scope.error = error.data.error;
+            })
         };
 
         $scope.find = function() {
           Members.query(function(members) {
             $scope.members = members;
+            $scope.msMembers = [];
+            for(var i = 0; i < $scope.members.length; i++){
+              var newMember = {};
+              newMember.name = $scope.members[i].first_name + ' ' + $scope.members[i].last_name;
+              newMember.id = $scope.members[i]._id;
+              newMember.phone = $scope.members[i].phone;
+              newMember.email = $scope.members[i].email;
+              newMember.ticked = false;
+              $scope.msMembers.push(newMember);
+            }
           });
         };
 

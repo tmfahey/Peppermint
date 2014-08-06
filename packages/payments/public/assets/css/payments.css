@@ -1,3 +1,16 @@
 .payments-example h1 {
 	background-color: purple
 }
+.payment{
+	margin: 3px 0;
+	padding: 10px 20px;
+	font-size: 18px;
+}
+
+.seeMore{
+	background: #F8F8F8;
+}
+
+.pending{
+	background: #FFFFBE;
+}

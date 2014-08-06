@@ -16,13 +16,8 @@ Members.register(function(app, auth, database) {
     //We enable routing. By default the Package Object is passed to the routes
     Members.routes(app, auth, database);
 
-    //We are adding a link to the main menu for all authenticated users
-    Members.menus.add({
-        title: 'Members',
-        link: 'members',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
+
+    Members.aggregateAsset('css', 'members.css');
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above

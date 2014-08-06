@@ -17,12 +17,11 @@ Payments.register(function(app, auth, database) {
     Payments.routes(app, auth, database);
 
     //We are adding a link to the main menu for all authenticated users
-    Payments.menus.add({
-        title: 'Request Payments',
-        link: 'payments',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
+ 
+
+    Payments.angularDependencies(['multi-select']);
+    Payments.aggregateAsset('css','angular-multi-select.css');
+
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above
@@ -45,6 +44,7 @@ Payments.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
+  Payments.aggregateAsset('css', 'payments.css');
 
     return Payments;
 });

@@ -1,3 +1,14 @@
 <section data-ng-controller="IndexController">
-  <h1 mean-token="'home-default'">This is the home view</h1>
+  <h1 mean-token="'home-default'">Welcome to Peppermint</h1>
+  <div class="row" ng-if="!global.authenticated">
+  	<div class="col-md-12">
+  		<p>Peppermint seemlessly integrates with Venmo to give you a one-of-a-kind group payment collection experience.</p>
+  		<a class="btn btn-info" href="/#!/auth/login">Login</a>
+  	</div>
+  </div>
+  <div class="row" ng-if="global.authenticated">
+  	<div class="col-md-12">
+  		logged
+  	</div>
+  </div>
 </section>

@@ -3,7 +3,7 @@
 module.exports = {
   db: 'mongodb://localhost/peppermint',
   app: {
-    name: 'MEAN - FullStack JS - Development'
+    name: 'Peppermint - Group Payment Collection'
   },
   facebook: {
     clientID: 'APP_ID',

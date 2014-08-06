@@ -4,35 +4,69 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 /**
  * Member Schema
  */
 var PaymentSchema = new Schema({
-  access_token: {
+
+  member: {
+    type: ObjectId,
+    required: true
+  },
+  name: {
     type: String,
     required: true
   },
-  phone: {
-    type: String,
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
   },
-  email: {
+  id: {
     type: String,
+    required: true
   },
-  note: {
-    type: String,
-    required: true,
+  date_created: {
+    type: Date,
+    default: Date.now
   },
-  amount: {
-    type: String,
-    required: true,
+  date_completed:{
+    type: Date,
+    default: null
   },
-  audience: {
+  status: {
     type: String,
-    default: 'private'
+    required: true
+  },
+  show: {
+    type: Boolean,
+    default:true
+  },
+  amount:{
+    type: String,
+    required: true
+  },
+  action:{
+    type: String,
+    required: true
+  },
+  audience:{
+    type: String,
+    required: true
+  },
+  note:{
+    type: String,
+    required: true
   }
 });
+
+PaymentSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).exec(cb);
+};
 
 
 mongoose.model('Payment', PaymentSchema);
