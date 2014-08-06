@@ -3,7 +3,7 @@
 module.exports = {
   db: 'mongodb://localhost/peppermint',
   app: {
-    name: 'Peppermint - Group Payment Collections'
+    name: 'Peppermint - Group Payment Collection'
   },
   facebook: {
     clientID: 'APP_ID',
