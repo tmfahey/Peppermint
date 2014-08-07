@@ -19,6 +19,8 @@ Members.register(function(app, auth, database) {
 
     Members.aggregateAsset('css', 'members.css');
 
+
+
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback

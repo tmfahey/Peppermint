@@ -51,7 +51,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
               $scope.error = '';
             }, function(error){
               $scope.error = error.data.error;
-            })
+            });
         };
 
         $scope.find = function() {

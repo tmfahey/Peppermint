@@ -39,13 +39,13 @@ exports.create = function(req, res) {
     });
   }
 
-  if(!validator.isEmail(member.email) && member.email != null){
+  if(!validator.isEmail(member.email) && member.email !== null){
     return res.json(400, {
       error: 'Invalid email'
     });
   }
 
-  if(!validator.isNumeric(member.phone) && member.phone != null){
+  if(!validator.isNumeric(member.phone) && member.phone !== null){
     return res.json(400, {
       error: 'Phone number must be a number. Example: 1112223456.'
     });
@@ -82,13 +82,13 @@ exports.update = function(req, res) {
     });
   }
 
-  if(!validator.isEmail(member.email) && member.email != null){
+  if(!validator.isEmail(member.email) && member.email !== null){
     return res.json(400, {
       error: 'Invalid email'
     });
   }
 
-  if(!validator.isNumeric(member.phone) && member.phone != null){
+  if(!validator.isNumeric(member.phone) && member.phone !== null){
     return res.json(400, {
       error: 'Phone number must be a number. Example: 1112223456.'
     });

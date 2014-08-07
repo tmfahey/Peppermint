@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://localhost/peppermint',
+  db: 'mongodb://tempUser:tempPass!@ds031277.mongolab.com:31277/peppermint',
   app: {
     name: 'Peppermint - Group Payment Collection'
   },

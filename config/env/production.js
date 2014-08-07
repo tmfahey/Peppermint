@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://localhost/mean-prod',
+  db: 'mongodb://tempUser:tempPass!@ds031277.mongolab.com:31277/peppermint',
   app: {
     name: 'Peppermint - Group Payment Collection'
   },
@@ -29,6 +29,11 @@ module.exports = {
     clientID: 'API_KEY',
     clientSecret: 'SECRET_KEY',
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
+  },
+  venmo: {
+    clientID: '1839',
+    clientSecret: 'jbpXXbJk8ttHY3JwFJaK5VGrwExE85jW',
+    callbackURL: 'http://127.0.0.1:3000/auth/venmo/callback'
   },
   emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
   mailer: {

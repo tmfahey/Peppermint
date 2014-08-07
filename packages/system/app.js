@@ -18,7 +18,6 @@ System.register(function(app, auth, database) {
   //We enable routing. By default the Package Object is passed to the routes
   System.routes(app, auth, database);
 
-  System.aggregateAsset('css', 'common.css');
 
   // The middleware in config/express will run before this code
 
@@ -37,6 +36,7 @@ System.register(function(app, auth, database) {
     roles: ['authenticated'],
     menu: 'main',
   });
+
   System.menus.add({
     title: 'Members',
     link: 'members',
@@ -50,6 +50,11 @@ System.register(function(app, auth, database) {
       roles: ['authenticated'],
       menu: 'main',
   });
+
+  System.aggregateAsset('css', 'common.css');
+
+
+
 
 
 

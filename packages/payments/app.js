@@ -20,7 +20,11 @@ Payments.register(function(app, auth, database) {
  
 
     Payments.angularDependencies(['multi-select']);
+
+
     Payments.aggregateAsset('css','angular-multi-select.css');
+    Payments.aggregateAsset('css', 'payments.css');
+
 
 
     /**
@@ -44,7 +48,8 @@ Payments.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
-  Payments.aggregateAsset('css', 'payments.css');
+
+
 
     return Payments;
 });

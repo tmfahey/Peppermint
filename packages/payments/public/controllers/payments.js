@@ -57,7 +57,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             }
             else{
                 isValid = false;
-                $scope.error = "You must select at least 1 member.";
+                $scope.error = 'You must select at least 1 member.';
             }
 
             if(isValid){
@@ -86,13 +86,11 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                         success(function(data, status, headers, config) {
                             var member;
                             for(var k = 0; k < tickedMembers.length; k++){
-                                if((tickedMembers[k].email === data.data.payment.target.email)){
+                                if(angular.lowercase(tickedMembers[k].email) === angular.lowercase(data.data.payment.target.email)){
                                     member = tickedMembers[k];
-                                    console.log('found: ' + member.name);
                                 }else
                                 if(tickedMembers[k].phone === data.data.payment.target.phone && data.data.payment.target.phone !== null){
                                     member = tickedMembers[k];
-                                    console.log('found: ' + member.name);
                                 }
                             }
                             $scope.success.push('Payment Request to ' + member.name + ' Successful.\n\r');
