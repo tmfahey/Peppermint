@@ -114,4 +114,6 @@ module.exports = function(MeanUser, app, auth, database, passport) {
       failureRedirect: '#!/login',
     }), users.authCallback);
 
+
+
 };

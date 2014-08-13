@@ -34,21 +34,21 @@ System.register(function(app, auth, database) {
     title: 'Dashboard',
     link: 'home',
     roles: ['authenticated'],
-    menu: 'main',
+    menu: 'main'
   });
 
   System.menus.add({
     title: 'Members',
     link: 'members',
     roles: ['authenticated'],
-    menu: 'main',
+    menu: 'main'
   });
 
   System.menus.add({
       title: 'Request Payments',
       link: 'payments',
       roles: ['authenticated'],
-      menu: 'main',
+      menu: 'main'
   });
 
   System.aggregateAsset('css', 'common.css');

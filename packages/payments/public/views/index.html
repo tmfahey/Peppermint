@@ -1,47 +1,4 @@
 
-<!--
-NOTES:
-			Get current user information by making GET request to https://api.venmo.com/v1/me?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
-			Get users friends by making GET request to https://api.venmo.com/v1/users/1088551785594880949/friends?access_token=4e4sw1111111111t8an8dektggtcbb45<br>
-			Sanboxx URL: https://sandbox-api.venmo.com/v1<br>
-			Sandbox account: user id 145434160922624933, email "venmo@venmo.com" and phone "15555555555"<br>
-			response after charge:<br>
-			{
-			  "data":  {
-			    "balance": "0.04",
-			    "payment":  {
-			      "status": "pending",
-			      "refund": null,
-			      "medium": "api",
-			      "date_completed": null,
-			      "target":  {
-			        "phone": null,
-			        "type": "email",
-			        "email": "fahey085@gmail.com",
-			        "user": null
-			      },
-			      "audience": "private",
-			      "actor":  {
-			        "username": "taylor-fahey",
-			        "first_name": "Taylor",
-			        "last_name": "Fahey",
-			        "display_name": "Taylor Fahey",
-			        "about": "No Short Bio",
-			        "profile_picture_url": "https://graph.facebook.com/100000019202462/picture?type=square",
-			        "id": "1435218686771200177",
-			        "date_joined": "2014-06-04T05:23:20"
-			      },
-			      "note": "frat",
-			      "amount": 0.1,
-			      "fee": null,
-			      "action": "charge",
-			      "date_created": "2014-07-22T17:45:34.243000",
-			      "id": "1470381502175904366"
-			    }
-			  }
-			}
-			</p>
--->
 <div data-ng-controller="PaymentsController">
 	<div class="row">
 		<form name="paymentForm" ng-model"paymentForm" data-ng-submit="requestPayment(msMembers)" class="col-md-6" data-ng-controller="MembersController" data-ng-init="find()" validate>

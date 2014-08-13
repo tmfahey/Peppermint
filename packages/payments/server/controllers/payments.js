@@ -91,7 +91,6 @@ exports.save = function(req,res){
 };
 
 exports.grabAll = function(req, res){
-  console.log(req.user);
   Payment.find({user: req.user._id}).sort('-created').exec(function(err, payments) {
     if (err) {
       return res.json(500, {
@@ -144,11 +143,6 @@ exports.all = function(req, res) {
     if (!error && response.statusCode === 200) {
       res.json(body.data);
     }
-  });/*
-  request('https://api.venmo.com/v1/me?access_token=s2g3kQSgMxHnFQP49NAXBmZxaBXEy7wP', function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      console.log(body); // Print the google web page.
-      res.json(body);
-    }
-  });*/
+  });
+  
 };

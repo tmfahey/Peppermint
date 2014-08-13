@@ -4,12 +4,22 @@
   </div>
 
   <div class="left pull-left">
-    <ul class="navbar-nav nav">
+    <!--<ul class="navbar-nav nav">
       <li data-ng-repeat="item in menus.main" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
         <a mean-token="item.link" ui-sref='{{item.link}}'>{{item.title}}</a>
       </li>
+    </ul> REMOVING TO UTILIZE STATIC APPROACH-->
+    <ul class="navbar-nav nav" data-ng-show="global.authenticated">
+      <li ui-route="/home" ng-class="{active: $uiRoute}" class="ng-scope">
+        <a mean-token="item.link" ui-sref="home" class="ng-binding" href="#!/">Dashboard</a>
+      </li>
+      <li ui-route="/members" ng-class="{active: $uiRoute}" class="ng-scope">
+        <a mean-token="item.link" ui-sref="members" class="ng-binding" href="#!/members/">Members</a>
+      </li>
+      <li  ui-route="/payments" ng-class="{active: $uiRoute}" class="ng-scope">
+        <a mean-token="item.link" ui-sref="payments" class="ng-binding" href="#!/payments/">Request Payments</a>
+      </li>
     </ul>
-
   </div>
 
   <div class="account">

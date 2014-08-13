@@ -1,4 +1,3 @@
-
 /* 
  * Angular JS Multi Select
  * Creates a dropdown-like button with checkboxes. 
@@ -122,20 +121,22 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             $scope.formElements     = [];
             $scope.tabIndex         = 0;
             $scope.clickedItem      = null;
-
+            prevTabIndex            = 0;
+            helperItems             = [];
+            helperItemsLength       = 0;
 
             // If user specify a height, call this function
             $scope.setHeight = function() {
                 if ( typeof $scope.maxHeight !== 'undefined' ) {
                     return 'max-height: ' + $scope.maxHeight + '; overflow-y:scroll';
                 }
-            };
+            }
 
             // A little hack so that AngularJS ng-repeat can loop using start and end index like a normal loop
             // http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array
             $scope.numberToArray = function( num ) {
                 return new Array( num );   
-            };
+            }
 
             $scope.updateFilter = function()
             {
@@ -196,18 +197,18 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 for ( var i = 0; i < element[ 0 ].getElementsByTagName( 'FORM' )[ 0 ].elements.length ; i++ ) { 
                     $scope.formElements.push( element[ 0 ].getElementsByTagName( 'FORM' )[ 0 ].elements[ i ] );
                 }
-            };            
+            }            
 
             // check if an item has $scope.groupProperty (be it true or false)
             $scope.isGroupMarker = function( item , type ) {
                 if ( typeof item[ $scope.groupProperty ] !== 'undefined' && item[ $scope.groupProperty ] === type ) return true; 
                 return false;
-            };
+            }
 
             $scope.removeGroupEndMarker = function( item ) {
                 if ( typeof item[ $scope.groupProperty ] !== 'undefined' && item[ $scope.groupProperty ] === false ) return false; 
                 return true;
-            };
+            }
             
 
             // Show or hide a helper element 
@@ -218,8 +219,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     switch( elementString.toUpperCase() ) {
                         case 'ALL':                                                        
                             return false;                    
+                            break;
                         case 'NONE':                            
                             return false;
+                            break;
                         case 'RESET':
                             if ( typeof attrs.helperElements === 'undefined' ) {
                                 return true;                    
@@ -252,7 +255,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     }
                     return false;
                 }                
-            };                
+            }                
 
             // call this function when an item is clicked
             $scope.syncItems = function( item, e, ng_repeat_index ) {                                                                
@@ -274,6 +277,8 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 if ( typeof item[ $scope.groupProperty ] !== 'undefined' && item[ $scope.groupProperty ] === false ) {
                     return false;
                 }                
+
+                index = $scope.filteredModel.indexOf( item );       
 
                 // process items if the start of group marker is clicked ( only for multiple selection! )
                 // if, in a group, there are items which are not selected, then they all will be selected
@@ -416,7 +421,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 // set & remove CSS style
                 $scope.removeFocusStyle( prevTabIndex );
                 $scope.setFocusStyle( $scope.tabIndex );
-            };     
+            }     
 
             // update $scope.selectedItems
             // this variable is used in $scope.outputModel and to refresh the button label
@@ -431,7 +436,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         }
                     }
                 });                                
-            };
+            }
 
             // refresh output model as well
             $scope.refreshOutputModel = function() {                
@@ -443,7 +448,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         delete value[ $scope.spacingProperty ];      
                     });
                 }                  
-            };
+            }
 
             // refresh button label
             $scope.refreshButton = function() {
@@ -488,7 +493,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     }
                 }
                 $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );                
-            };
+            }
 
             // Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
             // Take note that the granular control has higher priority.
@@ -506,7 +511,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     }
                 }
                 
-            };
+            }
 
             // A simple function to parse the item label settings
             $scope.writeLabel = function( item, type ) {
@@ -515,7 +520,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 angular.forEach( temp, function( value2, key2 ) {
                     if ( typeof value2 !== 'undefined' ) {                        
                         angular.forEach( item, function( value1, key1 ) {                    
-                            if ( key1 === value2 ) {
+                            if ( key1 == value2 ) {
                                 label += '&nbsp;' + value1;        
                             }
                         });                    
@@ -525,7 +530,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     return label;
                 }
                 return $sce.trustAsHtml( label );
-            };
+            }
 
             // UI operations to show/hide checkboxes based on click event..
             $scope.toggleCheckboxes = function( e ) {    
@@ -613,13 +618,13 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     // open callback
                     $scope.onOpen( { data: element } );
                 }                            
-            };
+            }
             
             // handle clicks outside the button / multi select layer
             $scope.externalClickListener = function( e ) {                   
                 targetsArr = element.find( e.target.tagName );
                 for (var i = 0; i < targetsArr.length; i++) {                                        
-                    if ( e.target === targetsArr[i] ) {
+                    if ( e.target == targetsArr[i] ) {
                         return;
                     }
                 }
@@ -633,7 +638,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 $timeout( function() {
                     $scope.onClose( { data: element } );
                 }, 0 );
-            };
+            }
    
             // traverse up to find the button tag
             // http://stackoverflow.com/questions/7332179/how-to-recursively-search-all-parentnodes
@@ -647,7 +652,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     }
                 }
                 return null;
-            };
+            }
 
             // select All / select None / reset buttons
             $scope.select = function( type, e ) {
@@ -690,7 +695,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         break;
                     default:                        
                 }                                                                                 
-            };            
+            }            
 
             // just to create a random variable name                
             genRandomString = function( length ) {                
@@ -700,7 +705,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                      temp += possible.charAt( Math.floor( Math.random() * possible.length ));
                 }
                 return temp;
-            };
+            }
 
             // count leading spaces
             $scope.prepareGrouping = function() {
@@ -714,7 +719,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         spacing-=2;
                     }                 
                 });
-            };
+            }
 
             // prepare original index
             $scope.prepareIndex = function() {
@@ -723,7 +728,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     value[ $scope.indexProperty ] = ctr;
                     ctr++;
                 });
-            };
+            }
 
             // navigate using up and down arrow
             $scope.keyboardListener = function( e ) { 
@@ -737,7 +742,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 }                    
                 
                 // next element ( tab, down & right key )                    
-                else if ( key === 40 || key === 39 || ( !e.shiftKey && key === 9 ) ) {                    
+                else if ( key === 40 || key === 39 || ( !e.shiftKey && key == 9 ) ) {                    
                     isNavigationKey = true;
                     prevTabIndex = $scope.tabIndex; 
                     $scope.tabIndex++;                         
@@ -793,17 +798,17 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 }
 
                 isNavigationKey = false;
-            };
+            }
 
             // set (add) CSS style on selected row
             $scope.setFocusStyle = function( tabIndex ) {                
                 angular.element( $scope.formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );                        
-            };
+            }
 
             // remove CSS style on selected row
             $scope.removeFocusStyle = function( tabIndex ) {
                 angular.element( $scope.formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
-            };
+            }
 
             ///////////////////////////////////////////////////////
             //
@@ -890,6 +895,6 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 };
             }
         }   
-    };
+    }
 }]);
 
