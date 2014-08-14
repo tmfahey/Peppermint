@@ -44,31 +44,37 @@ exports.create = function(req, res) {
 
 
 
-/**
- * payment hook
+//payment hook
  
 exports.hook = function(req, res) {
-  var id = req.data.id;
-  var reqPayment = req.data;
+  var paymentUpdate = req.body.data;
   var paymentHold;
-  Payment.load(id, function(err, payment) {
-
-    paymentHold = payment;
-  });
-
-  paymentHold.status = reqPayment.status;
-  paymentHold.date_completed = reqPayment.date_completed;
-
-  paymentHold.save(function(err) {
+  
+  Payment.findOne({'payment.id': paymentUpdate.id}).exec(function(err, payments) {
     if (err) {
       return res.json(500, {
-        error: 'Cannot update the payment'
+        error: 'Could not find payment'
       });
     }
-    res.json(paymentHold);
+    if(payments===null){
+      return res.json(500, {
+        error: 'Could not find payment'
+      });
+    }
+    paymentHold = payments;
+    paymentHold.payment = paymentUpdate;
 
+    paymentHold.save(function(err) {
+      if (err) {
+        return res.json(500, {
+          error: 'Cannot update the payment'
+        });
+      }
+      res.json(paymentHold.payment);
+
+    });
   });
-};*/
+};
 
 exports.hookValidate = function(req,res){
   res.send(req.query.venmo_challenge);
@@ -79,6 +85,7 @@ exports.save = function(req,res){
 
   var payment = new Payment(req.body);
   payment.user = req.user;
+  console.log(payment);
   payment.save(function(err) {
     if (err) {
       return res.json(500, {
@@ -91,7 +98,7 @@ exports.save = function(req,res){
 };
 
 exports.grabAll = function(req, res){
-  Payment.find({user: req.user._id}).sort('-created').exec(function(err, payments) {
+  Payment.find({user: req.user._id}).sort('-created').populate('member').exec(function(err, payments) {
     if (err) {
       return res.json(500, {
         error: 'Cannot list the members'

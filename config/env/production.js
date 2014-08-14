@@ -31,9 +31,9 @@ module.exports = {
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
   venmo: {
-    clientID: '1890',
-    clientSecret: 'CCX5HWPg54x7LUPGeQL9bB7zbDJTX5h2',
-    callbackURL: 'http://127.0.0.1:3000/auth/venmo/callback'
+    clientID: '1839',
+    clientSecret: 'jbpXXbJk8ttHY3JwFJaK5VGrwExE85jW',
+    callbackURL: 'http://peppermint.intuitlabs.com/auth/venmo/callback'
   },
   emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
   mailer: {

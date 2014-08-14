@@ -49,16 +49,16 @@
 				<h1>Payment Requests</h1>
 			</div>
 			<div class="row" ng-repeat="payment in payments">
-				<div class="col-md-12 payment {{payment.status}}" ng-click="show=!show" style="cursor:pointer;">
-					{{payment.date_created | date:'MM/dd/yyyy'}} : {{payment.name}} - ${{payment.amount}}
+				<div class="col-md-12 payment {{payment.payment.status}}" ng-click="show=!show" style="cursor:pointer;">
+					{{payment.payment.date_created | date:'MM/dd/yyyy'}} : {{payment.member.first_name}} - ${{payment.payment.amount}}
 				</div>
 				<div ng-show="show" ng-click="show=false" class="seeMore">
 					<div class="row">
 						<div class="col-md-3 col-md-offset-1">
-							Member Name:
+							Member:
 						</div>
 						<div class="col-md-8">
-							{{payment.name}}
+							{{payment.member.first_name}} {{payment.member.last_name}}
 						</div>
 					</div>
 					<div class="row">
@@ -66,7 +66,7 @@
 							Type:
 						</div>
 						<div class="col-md-8">
-							{{payment.action}}
+							{{payment.payment.action}}
 						</div>
 					</div>
 					<div class="row">
@@ -74,7 +74,7 @@
 							Amount:
 						</div>
 						<div class="col-md-8">
-							{{payment.amount}}
+							{{payment.payment.amount}}
 						</div>
 					</div>
 					<div class="row">
@@ -82,7 +82,7 @@
 							Created on:
 						</div>
 						<div class="col-md-8">
-							{{payment.date_created | date:'MM/dd/yyyy @ h:mma'}}
+							{{payment.payment.date_created | date:'MM/dd/yyyy @ h:mma'}}
 						</div>
 					</div>
 					<div class="row">
@@ -90,7 +90,7 @@
 							Status:
 						</div>
 						<div class="col-md-8">
-							{{payment.status}}
+							{{payment.payment.status}}
 						</div>
 					</div>
 					<div class="row">
@@ -98,7 +98,7 @@
 							Note:
 						</div>
 						<div class="col-md-8">
-							{{payment.note}}
+							{{payment.payment.note}}
 						</div>
 					</div>
 					<div class="row">

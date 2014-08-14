@@ -16,6 +16,7 @@ module.exports = function(Payments, app, auth) {
   app.route('/payments')
     .get(auth.requiresLogin, payments.all, hasAuthorization)
     .post(auth.requiresLogin, payments.create);
+  
   app.route('/payments/:payId')
     .get(auth.requiresLogin, payments.getPayment, hasAuthorization);
 
@@ -27,7 +28,8 @@ module.exports = function(Payments, app, auth) {
     .delete(auth.requiresLogin, payments.destroy, hasAuthorization);
 
   app.route('/paymentHook')
-    .get(payments.hookValidate);
+    .get(payments.hookValidate)
+    .post(payments.hook);
 
 
 

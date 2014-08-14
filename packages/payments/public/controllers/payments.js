@@ -40,6 +40,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
 
         $scope.requestPayment = function(members){
             var tickedMembers = [];
+            //populating tickedMembers
             for(var i = 0; i < members.length; i++){
                 if(members[i].ticked === true){
                     var newMember = {};
@@ -98,16 +99,9 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                             $scope.$$childHead.payment = '';
                             var pay = new Payments({
                               member: member.id,
-                              name: member.name,
-                              id: data.data.payment.id,
-                              status: data.data.payment.status,
-                              amount: data.data.payment.amount,
-                              action: data.data.payment.action,
-                              note: data.data.payment.note,
-                              date_created: data.data.payment.date_created,
-                              date_completed: data.data.payment.date_completed,
-                              audience: data.data.payment.audience                       
+                              payment: data.data.payment                  
                             });
+                            console.log(data);
                             pay.$save(function(response) {
                               //repopulate members with a find
                               $scope.findPayments();

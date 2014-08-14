@@ -69,7 +69,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
             }
           });
         };
-
+        
         $scope.findOne = function() {
           Members.get({
             memberId: $stateParams.memberId
