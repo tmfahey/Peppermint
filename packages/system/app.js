@@ -52,6 +52,7 @@ System.register(function(app, auth, database) {
   });
 
   System.aggregateAsset('css', 'common.css');
+  
 
 
 

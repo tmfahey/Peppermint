@@ -49,6 +49,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
               $scope.email = '';
               $scope.phone = '';  
               $scope.error = '';
+              $scope.memberForm.$setPristine();
             }, function(error){
               $scope.error = error.data.error;
             });
@@ -69,7 +70,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
             }
           });
         };
-        
+
         $scope.findOne = function() {
           Members.get({
             memberId: $stateParams.memberId

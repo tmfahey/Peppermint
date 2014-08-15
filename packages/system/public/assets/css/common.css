@@ -40,6 +40,7 @@ h1{
     margin-top:70px;
     width:100%
 }
+
 footer {
     position:fixed;
     left:0;
@@ -54,4 +55,36 @@ footer {
 footer p {
     padding:5px 0 12px 10px
 }
+.navbar-inverse {
+    background-color: #C1E1A6;
+    border-color: #118C4E;
+}
 
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #118C4E;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #585858;
+    background-color: #C1E1A6;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #118C4E;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #FFF;
+    background-color: #118C4E;
+}
+
+.announcement-heading {
+  font-size: 50px;
+  margin: 0;
+}
+
+.announcement-text {
+  margin: 0;
+}

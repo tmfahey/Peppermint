@@ -25,7 +25,9 @@ module.exports = function(Payments, app, auth) {
     .post(auth.requiresLogin, payments.save, hasAuthorization);
   
   app.route('/paymentdb/:payId')
-    .delete(auth.requiresLogin, payments.destroy, hasAuthorization);
+    .delete(auth.requiresLogin, payments.destroy, hasAuthorization)
+    .put(auth.requiresLogin, hasAuthorization, payments.update);
+
 
   app.route('/paymentHook')
     .get(payments.hookValidate)

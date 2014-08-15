@@ -5,7 +5,8 @@
  */
 var request = require('request'),
   mongoose = require('mongoose'),
-  Payment = mongoose.model('Payment');
+  Payment = mongoose.model('Payment'),
+    _ = require('lodash');
 
 
 
@@ -120,6 +121,25 @@ exports.getPayment = function(req, res) {
     if (!error && response.statusCode === 200) {
       res.json(body.data);
     }
+  });
+};
+
+exports.update = function(req, res) {
+  var payment = req.payment;
+  console.log(payment);
+
+  payment = _.extend(payment, req.body);
+  console.log(payment);
+
+  payment.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.json(500, {
+        error: 'Cannot update the payment'
+      });
+    }
+    res.json(payment);
+
   });
 };
 

@@ -96,12 +96,13 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                             }
                             $scope.success.push('Payment Request to ' + member.name + ' Successful.\n\r');
                             $scope.error = '';
-                            $scope.$$childHead.payment = '';
+                            $scope.$$childHead.paymentForm.$setPristine();
+                            $scope.$$childHead.payment.amount = '';
+                            $scope.$$childHead.payment.note = '';
                             var pay = new Payments({
                               member: member.id,
                               payment: data.data.payment                  
                             });
-                            console.log(data);
                             pay.$save(function(response) {
                               //repopulate members with a find
                               $scope.findPayments();
@@ -126,14 +127,41 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             });
         };
 
+        $scope.hidePayment = function(payment){
+            payment.show = false;
+            if(payment.member._id)
+                payment.member = payment.member._id;
+            console.log(payment.member);
+            payment.$update(function(){
+                $scope.findPayments();
+            });
+        };
+
         $scope.findPayments = function() {
           Payments.query(function(payments) {
             $scope.payments = payments;
+            $scope.populateDash();
           });
         };
 
-
-
+        $scope.populateDash = function(){
+            $scope.fundsCollected = 0;
+            $scope.pending = [];
+            $scope.settled = [];
+            $scope.errors = [];
+            $scope.displayedPayments = $scope.payments;
+            for(var i = 0; i < $scope.payments.length; i++){
+                if($scope.payments[i].payment.status === 'settled'){
+                    $scope.fundsCollected += $scope.payments[i].payment.amount;
+                    $scope.settled.push($scope.payments[i]);
+                }else
+                if($scope.payments[i].payment.status === 'pending'){
+                    $scope.pending.push($scope.payments[i]);
+                }else{
+                    $scope.errors.push($scope.payments[i]);
+                }
+            }
+        };
 
     }
 ]);
