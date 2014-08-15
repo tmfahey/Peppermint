@@ -61,7 +61,8 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
             $scope.msMembers = [];
             for(var i = 0; i < $scope.members.length; i++){
               var newMember = {};
-              newMember.name = $scope.members[i].first_name + ' ' + $scope.members[i].last_name;
+              newMember.first_name = $scope.members[i].first_name;
+              newMember.last_name = $scope.members[i].last_name;
               newMember.id = $scope.members[i]._id;
               newMember.phone = $scope.members[i].phone;
               newMember.email = $scope.members[i].email;
