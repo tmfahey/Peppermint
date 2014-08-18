@@ -76,7 +76,8 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                     else if(tickedMembers[j].email !== null)
                         postData.email = tickedMembers[j].email;
 
-                    if(tickedMembers[j].email === null && tickedMembers[j].phone){
+                    if(tickedMembers[j].email === null && tickedMembers[j].phone === null){
+                        $scope.error = tickedMembers[j].first_name + tickedMembers[j].first_name + ' has an invalid phone/email';
                         //invalid member
                     }else{
                         $http({
@@ -94,7 +95,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                                     }
                                 }else
                                 if(data.data.payment.target.type === 'phone'){
-                                    if(tickedMembers[k].phone === data.data.payment.target.phone && data.data.payment.target.phone !== null){
+                                    if(('1'+tickedMembers[k].phone) === data.data.payment.target.phone && data.data.payment.target.phone !== null){
                                         member = tickedMembers[k];
                                     }
                                 }

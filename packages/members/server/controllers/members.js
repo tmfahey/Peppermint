@@ -51,6 +51,12 @@ exports.create = function(req, res) {
     });
   }
 
+  if((member.phone).length !== 10 && member.phone !== null){
+    return res.json(400, {
+      error: 'Phone number must be 10 digits. Example: 1112223456.'
+    });
+  }
+
   member.save(function(err) {
     if (err) {
       return res.json(500, {
@@ -91,6 +97,12 @@ exports.update = function(req, res) {
   if(!validator.isNumeric(member.phone) && member.phone !== null){
     return res.json(400, {
       error: 'Phone number must be a number. Example: 1112223456.'
+    });
+  }
+
+  if((member.phone).length !== 10 && member.phone !== null){
+    return res.json(400, {
+      error: 'Phone number must be 10 digits. Example: 1112223456.'
     });
   }
 

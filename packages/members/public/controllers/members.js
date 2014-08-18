@@ -29,7 +29,6 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
         };
 
         $scope.addMember = function(newMember){
-            console.log(newMember);
             $scope.members.push(newMember);
             $scope.newMember = '';
         };
