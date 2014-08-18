@@ -18,6 +18,10 @@ var MemberSchema = new Schema({
     type: String,
     required: true
   },
+  prefersEmail: {
+    type: Boolean,
+    required: true
+  },
   phone: {
     type: String,
     default: null

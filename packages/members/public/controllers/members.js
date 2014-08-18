@@ -8,8 +8,11 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
         };
 
         $scope.updateMember = function(member){
-          if(member.phone === '')
+          if(member.prefersEmail){
             member.phone = null;
+          }else{
+            member.email = null;
+          }
                         
             member.$update(function() {
               //repopulate
@@ -34,11 +37,21 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
         };
 
         $scope.create = function() {
+            var billUsersEmail;
+
+            if(this.billPhone === 'true')
+              billUsersEmail= false;
+            else
+              billUsersEmail= true;
+
+
+
             var member = new Members({
               first_name: this.first_name,
               last_name: this.last_name,
               email: this.email,
-              phone: this.phone
+              phone: this.phone,
+              prefersEmail: billUsersEmail
             });
             member.$save(function(response) {
               //repopulate members with a find
@@ -49,6 +62,10 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
               $scope.phone = '';  
               $scope.error = '';
               $scope.memberForm.$setPristine();
+              $scope.billEmail = undefined;
+              $scope.billPhone = undefined;
+              $scope.showEmail = false;
+              $scope.showPhone = false;
             }, function(error){
               $scope.error = error.data.error;
             });
@@ -65,6 +82,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
               newMember.id = $scope.members[i]._id;
               newMember.phone = $scope.members[i].phone;
               newMember.email = $scope.members[i].email;
+              newMember.prefersEmail = $scope.members[i].prefersEmail;
               newMember.ticked = false;
               $scope.msMembers.push(newMember);
             }

@@ -86,7 +86,6 @@ exports.save = function(req,res){
 
   var payment = new Payment(req.body);
   payment.user = req.user;
-  console.log(payment);
   payment.save(function(err) {
     if (err) {
       return res.json(500, {
@@ -126,11 +125,7 @@ exports.getPayment = function(req, res) {
 
 exports.update = function(req, res) {
   var payment = req.payment;
-  console.log(payment);
-
   payment = _.extend(payment, req.body);
-  console.log(payment);
-
   payment.save(function(err) {
     if (err) {
       console.log(err);

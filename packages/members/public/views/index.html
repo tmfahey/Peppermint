@@ -33,28 +33,84 @@
 			{{error}}
 		</div>
 	</div>
+	<form name="memberForm" ng-model="memberForm" data-ng-submit="create()">
 	<div class="row">
 		<div class="col-md-12">
-			<h2>Add Member</h2>
-		    <form name="memberForm" ng-model="memberForm" data-ng-submit="create()">
-		    	<table style="width:90%">
-		    	<tr>
-			    	<td><label for="first_name">First Name*</label></td>
-			    	<td><input type="text" id="first_name" ng-model="first_name" required></td>
-			    	<td><label for="last_name">Last Name*</label></td>
-			    	<td><input type="text" id="last_name" ng-model="last_name" required></td>
-		    	</tr>
-		    	<tr>
-			    	<td><label for="email">Email Address</label></td>
-			    	<td><input type="text" id="email" ng-model="email"></td>
-			    	<td><label for="phone">Phone Number</label></td>
-			    	<td><input type="text" id="phone" ng-model="phone"></td>
-		    	</tr>
-		    	<tr><td><button class="btn btn-info" type="submit">Add Member</button></td></tr>
-				</table>
-		    </form>
+			<div class="row">
+				<div class="col-md-12">
+					<h2>Add Member</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="first_name">First Name*</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" id="first_name" style="width:70%;" ng-model="first_name" required>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="last_name">Last Name*</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" id="last_name" style="width:70%;" ng-model="last_name" required>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="email">Bill Member Via</label>
+						</div>
+						<div class="col-md-8">
+							<label class="radio-inline">
+							  <input type="radio" name="billPref" id="billEmail" ng-model="billEmail" value="true" ng-click="showEmail=true;showPhone=false;phone=undefined;billPhone=undefined" required>
+							  Email
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="billPref" id="billPhone" ng-model="billPhone" value="true" ng-click="showEmail=false;showPhone=true;email=undefined;billEmail=undefined">
+							  Phone
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6" ng-show="showEmail===true">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="email">Email</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" id="email" style="width:70%;" ng-model="email">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6" ng-show="showPhone===true">
+					<div class="row">
+						<div class="col-md-4">
+			    			<label for="phone">Phone #</label>
+						</div>
+						<div class="col-md-8">
+							<input type="text" id="phone" style="width:70%;" ng-model="phone">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<button class="btn btn-info" type="submit">Add Member</button>
+				</div>
+			</div>
+
 		</div>
 	</div>
+	</form>
 	<div class="row">
 		<div class="col-md-12">
 			<h2>Existing Members</h2>
@@ -69,8 +125,8 @@
 						<th>#</th>
 						<th>First Name</th>
 						<th>Last Name</th>
-						<th>Email</th>
-						<th>Phone Number</th>
+						<th>Bill Via</th>
+						<th>Email/Phone</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -88,10 +144,20 @@
 							<input ng-show="member.edit" type="text" ng-model="member.last_name" placeholder="Last Name" ng-required>
 						</td>
 						<td>
+							<div ng-hide="member.edit">
+								<span ng-show="member.prefersEmail">Email</span>
+								<span ng-hide="member.prefersEmail">Phone</span>
+							</div>
+							<div ng-show="member.edit">
+								<span ng-show="member.prefersEmail">Email </span><span ng-show="member.prefersEmail" ng-click="member.prefersEmail=false"><a href="">Phone?</a></span>
+								<span ng-hide="member.prefersEmail">Phone </span><span ng-hide="member.prefersEmail" ng-click="member.prefersEmail=true"><a href="">Email?</a></span>
+							</div>
+						</td>
+						<td ng-show="member.prefersEmail">
 							<span ng-hide="member.edit">{{member.email}}</span>
 							<input ng-show="member.edit" type="text" ng-model="member.email" placeholder="Email Address" ng-required>
 						</td>
-						<td>
+						<td ng-hide="member.prefersEmail">
 							<span ng-hide="member.edit">{{member.phone}}</span>
 							<input ng-show="member.edit" type="text" ng-model="member.phone" placeholder="Phone Number" ng-required>
 						</td>

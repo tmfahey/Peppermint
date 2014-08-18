@@ -49,6 +49,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                     newMember.id = members[i].id;
                     newMember.phone = members[i].phone;
                     newMember.email = members[i].email;
+                    newMember.prefersEmail = members[i].prefersEmail;
                     tickedMembers.push(newMember);
                 }
             }
@@ -71,9 +72,9 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                         note : this.payment.note,
                         audience: 'private'
                     };
-                    if(tickedMembers[j].phone !== null)
+                    if(tickedMembers[j].phone !== null && !tickedMembers[j].prefersEmail)
                         postData.phone = tickedMembers[j].phone;
-                    else if(tickedMembers[j].email !== null)
+                    else if(tickedMembers[j].email !== null && tickedMembers[j].prefersEmail)
                         postData.email = tickedMembers[j].email;
 
                     if(tickedMembers[j].email === null && tickedMembers[j].phone === null){
@@ -149,7 +150,6 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             payment.show = false;
             if(payment.member._id)
                 payment.member = payment.member._id;
-            console.log(payment.member);
             payment.$update(function(){
                 $scope.findPayments();
             });
