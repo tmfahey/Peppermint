@@ -72,6 +72,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
         };
 
         $scope.find = function() {
+          $scope.findingMembers = true;
           Members.query(function(members) {
             $scope.members = members;
             $scope.msMembers = [];
@@ -86,6 +87,7 @@ angular.module('mean.members').controller('MembersController', ['$scope', '$loca
               newMember.ticked = false;
               $scope.msMembers.push(newMember);
             }
+            $scope.findingMembers = false;
           });
         };
 
