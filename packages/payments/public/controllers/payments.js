@@ -6,14 +6,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
         $scope.package = {
             name: 'payments'
         };
-        //get user login data
-        $http({
-            method: 'GET',
-            url: '/users/me',
-        }).success(function(data, status, headers, config) {
-            $scope.data = data;
-            $scope.status = status;
-        });
+        
 
         $scope.requestPayment = function(members){
             var tickedMembers = [];
@@ -41,12 +34,20 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             }
 
             if(isValid){
+                var paymentAmount = -this.payment.amount;
+                var paymentNote = this.payment.note;
                 $scope.success = [];
-                for(var j = 0; j < tickedMembers.length; j++){
+                //get user login data
+                $http({
+                    method: 'GET',
+                    url: '/users/me',
+                }).success(function(data, status, headers, config) {
+                    var userData = data;
+                    for(var j = 0; j < tickedMembers.length; j++){
                     var postData = {
-                        access_token: $scope.data.access_token,
-                        amount : -this.payment.amount,
-                        note : this.payment.note,
+                        access_token: userData.access_token,
+                        amount : paymentAmount,
+                        note : paymentNote,
                         audience: 'private'
                     };
                     if(tickedMembers[j].phone !== null && !tickedMembers[j].prefersEmail)
@@ -110,6 +111,8 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
 
                     }
                 }
+                });
+                
             }else{
                 //server side invalid
                 console.log('invalid');

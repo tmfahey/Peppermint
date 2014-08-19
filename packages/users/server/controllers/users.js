@@ -111,6 +111,7 @@ exports.create = function(req, res, next) {
  */
 exports.me = function(req, res) {
   res.json(req.user || null);
+  console.log(req.user);
 };
 
 /**
