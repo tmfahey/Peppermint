@@ -152,7 +152,7 @@ exports.destroy = function(req, res) {
 };
 
 /**
- * List of Members
+ * List of all payments from venmo
  */
 exports.all = function(req, res) {
   var baseUrl = 'https://api.venmo.com/v1/payments';

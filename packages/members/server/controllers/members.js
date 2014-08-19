@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
   Member = mongoose.model('Member'),
   _ = require('lodash'),
-  validator = require('validator');
+  validator = require('validator'),
+  Payment = mongoose.model('Payment');
 
 /**
  * Find article by id
@@ -126,6 +127,24 @@ exports.update = function(req, res) {
  */
 exports.destroy = function(req, res) {
   var member = req.member;
+
+  Payment.find({user: req.user._id, member: req.member._id}).exec(function(err, payments) {
+    if (err) {
+      return res.json(500, {
+        error: 'Error finding members payments'
+      });
+    }
+    for(var i = 0; i < payments.length; i++){
+      payments[i].remove(function(err) {
+        if (err) {
+          return res.json(500, {
+            error: 'Could not delete payment'
+          });
+        }
+        console.log(payments[i]);
+      });
+    }
+  });
 
   member.remove(function(err) {
     if (err) {
