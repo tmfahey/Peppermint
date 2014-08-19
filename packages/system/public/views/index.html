@@ -120,7 +120,7 @@
               </thead>
               <tbody ng-repeat="payment in displayedPayments">
                 <tr  class="{{payment.payment.status}}" ng-click="showRow=!showRow">
-                  <td>{{$index}}</td>
+                  <td>{{$index+1}}</td>
                   <td>{{payment.payment.date_created | date:'MM/dd/yyyy'}}</td>
                   <td>{{payment.member.first_name}}</td>
                   <td>{{payment.member.last_name}}</td>
