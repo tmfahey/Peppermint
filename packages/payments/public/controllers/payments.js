@@ -7,7 +7,11 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             name: 'payments'
         };
         
-
+        /*This function currently should be rewritten to take advantage of promises
+         current implementation is very sloppy.
+          Will work for now, but known bugs when billing multiple members
+          where some members have incorrect phone number / email*/
+          
         $scope.requestPayment = function(members){
             var tickedMembers = [];
             //populating tickedMembers
