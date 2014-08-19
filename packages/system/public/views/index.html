@@ -1,179 +1,145 @@
 <section data-ng-controller="IndexController">
   <h1 mean-token="'home-default'">Welcome to Peppermint!</h1>
   <div class="row" ng-if="!global.authenticated">
-  	<div class="col-md-12">
-  		<h3>Your one-stop group payment collection system.</h3>
-      <p>Peppermint seemlessly integrates with Venmo. Login with your Venmo account to get started.</p>
-  		<a class="btn btn-info" href="/auth/venmo">Login</a>
-  	</div>
-  </div>
-  <div class="row" ng-if="global.authenticated" data-ng-controller="MembersController" data-ng-init="find()">
-  	<div class="col-md-12" data-ng-hide="members">
-      <div class="row">
-        <div class="col-md-12"><br>
-          Using Peppermint is as simple as adding members and requesting funds. As the funds roll in, you will be able to see them here. Give it a try, <a href="/#!/members/">add some members!</a>
-        </div>
+    <div class="row">
+    	<div class="col-md-12">
+    		<h3>Your one-stop group payment collection system.</h3>
+        <p>Peppermint seemlessly integrates with Venmo. Login with your Venmo account to get started.</p>
       </div>
     </div>
-    <div class="col-md-12" data-ng-show="members" data-ng-controller="PaymentsController" data-ng-init="findPayments()">
-  		<div class="row">
-          <div class="col-lg-3">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-4">
-                    <i class="fa fa-money fa-5x"></i>
-                  </div>
-                  <div class="col-xs-8 text-right">
-                    <p class="announcement-heading">${{fundsCollected | number}}</p>
-                    <p class="announcement-text">Collected Funds</p>
-                  </div>
-                </div>
-              </div>
-              <a href="/#!/payments/">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Request More
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-4">
-                    <i class="fa fa-hand-o-right fa-5x"></i>
-                  </div>
-                  <div class="col-xs-8 text-right">
-                    <p class="announcement-heading">{{settled.length}}</p>
-                    <p class="announcement-text">Payments Collected</p>
-                  </div>
-                </div>
-              </div>
-              <a href="/!#/payments">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Request More
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="panel panel-warning">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <i class="fa fa-circle-o-notch fa-5x"></i>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">{{pending.length}}</p>
-                    <p class="announcement-text">Payments Pending</p>
-                  </div>
-                </div>
-              </div>
-              <a href="/#!/payments/">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Remind
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <i class="fa fa-users fa-5x"></i>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">{{members.length}}</p>
-                    <p class="announcement-text">Members</p>
-                  </div>
-                </div>
-              </div>
-              <a href="/#!/members/">
-                <div class="panel-footer announcement-bottom">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      Add Members
-                    </div>
-                    <div class="col-xs-6 text-right">
-                      <i class="fa fa-arrow-circle-right"></i>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="btn btn-info" href="/auth/venmo" style="width:200px;">Login</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <br><h5>Peppermint is a project by</h5>
+        <a href="http://intuitlabs.com/home" target="_blank"><img src="/system/assets/img/labs.jpg" style="width:40%"></a>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-if="global.authenticated" data-ng-controller="MembersController" data-ng-init="find()">
+    <div data-ng-show="findingMembers">
+      <img src="/system/assets/img/loaders/loader.gif">
+    </div>
+    <div data-ng-hide="findingMembers">
+      <div class="col-md-12" data-ng-if="!(members.length>0)">
         <div class="row">
-          <div class="col-md-12">
-            <h1>Payment Requests</h1>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="btn-group">
-                  <button class="btn btn-default" style="width:80px" ng-click="displayedPayments=payments">All</button>                
-                  <button class="btn btn-success" style="width:80px" ng-click="displayedPayments=settled">Settled</button>
-                  <button class="btn btn-warning" style="width:80px" ng-click="displayedPayments=pending">Pending</button>
-                  <button class="btn btn-danger" style="width:80px" ng-click="displayedPayments=errors">Rejected</button>
+          <div class="col-md-12"><br>
+            Using Peppermint is as simple as adding members and requesting funds. As the funds roll in, you will be able to see them here. Give it a try, <a href="/#!/members/">add some members!</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" data-ng-if="members.length>0" data-ng-controller="PaymentsController" data-ng-init="findPayments()">
+        <div class="row">
+            <div class="col-lg-3">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <i class="fa fa-money fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                      <p class="announcement-heading">${{fundsCollected | number}}</p>
+                      <p class="announcement-text">Collected Funds</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Date Created</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody ng-repeat="payment in displayedPayments">
-              <tr  class="{{payment.payment.status}}" ng-click="showRow=!showRow">
-                <td>{{$index}}</td>
-                <td>{{payment.payment.date_created | date:'MM/dd/yyyy'}}</td>
-                <td>{{payment.member.first_name}}</td>
-                <td>{{payment.member.last_name}}</td>
-                <td>{{payment.payment.amount | currency:"$"}}</td>
-                <td>{{payment.payment.status}}</td>
-              </tr>
-              <tr ng-show="showRow" >
-                <td colspan='4'>
-                 Note: {{payment.payment.note}}
-                </td>
-                <td colspan='1'>
-                 <button class="btn btn-info">Remind</button>
-                </td>
-                <td colspan='1'>
-                 <button class="btn btn-default" ng-confirm-click="Are you sure you want to delete this payment? If deleted Peppermint will not know it ever existed." confirmed-click="deletePayment(payment)">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <div class="col-lg-3">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <i class="fa fa-check-circle-o fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                      <p class="announcement-heading">{{settled.length}}</p>
+                      <p class="announcement-text">Payments Collected</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <i class="fa fa-circle-o-notch fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                      <p class="announcement-heading">{{pending.length}}</p>
+                      <p class="announcement-text">Payments Pending</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <i class="fa fa-users fa-5x"></i>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <p class="announcement-heading">{{members.length}}</p>
+                      <p class="announcement-text">Members</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-  	</div>
+          <div class="row">
+            <div class="col-md-12">
+              <h1>Payment Requests</h1>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="btn-group">
+                    <button class="btn btn-default" style="width:80px" ng-click="displayedPayments=payments">All</button>                
+                    <button class="btn btn-success" style="width:80px" ng-click="displayedPayments=settled">Settled</button>
+                    <button class="btn btn-warning" style="width:80px" ng-click="displayedPayments=pending">Pending</button>
+                    <button class="btn btn-danger" style="width:80px" ng-click="displayedPayments=errors">Rejected</button>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date Created</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody ng-repeat="payment in displayedPayments">
+                <tr  class="{{payment.payment.status}}" ng-click="showRow=!showRow">
+                  <td>{{$index}}</td>
+                  <td>{{payment.payment.date_created | date:'MM/dd/yyyy'}}</td>
+                  <td>{{payment.member.first_name}}</td>
+                  <td>{{payment.member.last_name}}</td>
+                  <td>{{payment.payment.amount | currency:"$"}}</td>
+                  <td>{{payment.payment.status}}</td>
+                </tr>
+                <tr ng-show="showRow" >
+                  <td colspan='5'>
+                   Note: {{payment.payment.note}}
+                  </td>
+                  <td colspan='1'>
+                   <button class="btn btn-default" ng-confirm-click="Are you sure you want to delete this payment? If deleted Peppermint will not know it ever existed." confirmed-click="deletePayment(payment)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
 </section>
