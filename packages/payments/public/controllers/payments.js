@@ -13,30 +13,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
         }).success(function(data, status, headers, config) {
             $scope.data = data;
             $scope.status = status;
-
-            /*$http({
-            method: 'GET',
-            url: '/payments/',
-            params: {access_token: $scope.data.access_token}
-            }).success(function(data, status, headers, config) {
-                $scope.payments = data;
-                $scope.status = status;
-                console.log($scope.status);
-                console.log($scope.payments);
-            });*/
         });
-
-        /*$scope.updateMember = function(member){
-                        
-            member.$update(function() {
-              //repopulate
-              $scope.find();
-                member.edit = false;
-                console.log(member);
-            });
-
-        };*/
-
 
         $scope.requestPayment = function(members){
             var tickedMembers = [];
