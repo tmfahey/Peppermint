@@ -30,9 +30,9 @@
 					<div class="row">
 							<h1>Request Payments</h1>
 					</div>
-					<div class="row error" ng-show="error">
+					<div class="row error" ng-repeat="err in error" ng-show="error">
 						<p class="col-md-11">
-							{{error}}
+							{{err}}
 						</p>
 					</div>
 					<div class="row success" ng-repeat="suc in success" ng-show="success">
@@ -63,9 +63,13 @@
 				     	<h4>Note:</h4>
 				     	<textarea class="col-md-11" type="text" ng-model="payment.note" required></textarea>
 					</div>
-					<div class="row">
+					<div class="row" ng-hide="requesting">
 						<br>
 						<button class="btn btn-info" type="submit">Request Payment</button>
+					</div>
+					<div class="row" ng-show="requesting">
+						<br>
+						<button class="btn btn-info" type="submit" disabled>Requesting</button>
 					</div>
 					{{user}}
 					</form>

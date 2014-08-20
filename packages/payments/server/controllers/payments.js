@@ -36,6 +36,7 @@ exports.create = function(req, res) {
     if (!error && response.statusCode === 200) {
       res.json(response.body);
     }else{
+      console.log(response.body.error);
       res.json(response.statusCode, {
         error: response.body.error
       });
