@@ -16,14 +16,6 @@ Gettingstarted.register(function(app, auth, database) {
     //We enable routing. By default the Package Object is passed to the routes
     Gettingstarted.routes(app, auth, database);
 
-    //We are adding a link to the main menu for all authenticated users
-    Gettingstarted.menus.add({
-        title: 'gettingstarted example page',
-        link: 'gettingstarted example page',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
-
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
@@ -45,6 +37,7 @@ Gettingstarted.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
+  Gettingstarted.aggregateAsset('css', 'gettingstarted.css');
 
     return Gettingstarted;
 });
