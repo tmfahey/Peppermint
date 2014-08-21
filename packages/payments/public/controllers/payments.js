@@ -11,8 +11,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
 
         function sucPush(data){
             var target = data.data.data.payment.target;
-            //console.log(data);
-            //console.log(target);
+
             var member;
             for(var k = 0; k < tickedMembers.length; k++){
                 if(target.type === 'email'){
@@ -26,6 +25,14 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                     }
                 }
                 else if (target.type === 'user'){
+                    if(angular.isDefined(data.config.params.phone)){
+                        if((tickedMembers[k].phone) === data.config.params.phone)
+                            member = tickedMembers[k];
+                    }else
+                    if(angular.isDefined(data.config.params.email)){
+                        if(angular.lowercase(tickedMembers[k].email) === angular.lowercase(data.config.params.email))
+                            member = tickedMembers[k];
+                    }else
                     if(angular.lowercase(tickedMembers[k].first_name) === angular.lowercase(target.user.first_name) &&
                      angular.lowercase(tickedMembers[k].last_name) === angular.lowercase(target.user.last_name)){
                         member = tickedMembers[k];
@@ -47,22 +54,28 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
             }
 
         }
-        
+
         function errPush(r){
-            //console.log(r);
-            if(angular.isDefined(r.config.params.phone)){
-                $scope.error.push('Error billing member with number ' + r.config.params.phone);
-            }else
-            if(angular.isDefined(r.config.params.email)){
-                $scope.error.push('Error billing member with email ' + r.config.params.email);
+            var member;
+            var error = r.data.error.message;
+            var code = r.data.error.code;
+            for(var k = 0; k < tickedMembers.length; k++){
+                if(angular.isDefined(r.config.params.phone)){
+                    if(r.config.params.phone === tickedMembers[k].phone)
+                        member = tickedMembers[k];
+                }else
+                if(angular.isDefined(r.config.params.email)){
+                    if(angular.lowercase(r.config.params.email) === angular.lowercase(tickedMembers[k].phone))
+                        member = tickedMembers[k];
+                }
             }
-            
+            if(code===1107)
+                error = 'Invalid Phone Number.';
+
+            $scope.error.push('Error billing ' + member.first_name + ' ' + member.last_name + ' - ' + error);
         }
         
-        /*This function currently should be rewritten to take advantage of promises
-         current implementation is very sloppy.
-          Will work for now, but known bugs when billing multiple members
-          where some members have incorrect phone number / email*/          
+        /*Rewritten and working flawless*/       
         $scope.requestPayment = function(members){
             //populating tickedMembers
             $scope.success = [];
@@ -128,60 +141,9 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                                 }).then(sucPush).catch(errPush)
                             );
-                            console.log(postData);
-                            /*$http({
-                                url: '/payments',
-                                method: 'POST',
-                                params: postData,
-                                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                            }).
-                            success(function(data, status, headers, config) {
-                                var member;
-                                for(var k = 0; k < tickedMembers.length; k++){
-                                    if(data.data.payment.target.type === 'email'){
-                                        if(angular.lowercase(tickedMembers[k].email) === angular.lowercase(data.data.payment.target.email)){
-                                            member = tickedMembers[k];
-                                        }
-                                    }else
-                                    if(data.data.payment.target.type === 'phone'){
-                                        if(('1'+tickedMembers[k].phone) === data.data.payment.target.phone && data.data.payment.target.phone !== null){
-                                            member = tickedMembers[k];
-                                        }
-                                    }
-                                    else if (data.data.payment.target.type === 'user'){
-                                        if(angular.lowercase(tickedMembers[k].first_name) === angular.lowercase(data.data.payment.target.user.first_name) &&
-                                         angular.lowercase(tickedMembers[k].last_name) === angular.lowercase(data.data.payment.target.user.last_name)){
-                                            member = tickedMembers[k];
-                                        }
-                                    }
-                                    
-                                }
-                                if(data.data.payment.target.type==='user' && !angular.isDefined(member)){
-                                    alert('If any members have a Venmo, their first and last names must be correct.');
-                                }else{
-                                    $scope.success.push('Payment Request to ' + member.first_name + ' ' + member.last_name + ' Successful.\n\r');
-                                    $scope.$$childHead.paymentForm.$setPristine();
-                                    $scope.$$childHead.payment.amount = '';
-                                    $scope.$$childHead.payment.note = '';
-                                    var pay = new Payments({
-                                      member: member.id,
-                                      payment: data.data.payment                  
-                                    });
-                                    pay.$save(function(response) {
-                                      //repopulate members with a find
-                                      $scope.findPayments();
-                                    });
-                                }
-
-                            }).
-                            error(function(data, status, headers, config) {
-                                $scope.error.push(data.error.message);
-                            });*/
-
                         }
                     }
                     $q.all(charges).then(function(arrayOfResults) {
-                        console.log('in q');
                         $scope.findPayments();
                         $scope.requesting = false;
                         for(var i = 0; i < members.length; i++){
@@ -189,6 +151,7 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
                                 members[i].ticked = false;
                             }
                         }
+                        tickedMembers = [];
                         $scope.$$childHead.paymentForm.$setPristine();
                         $scope.$$childHead.payment.amount = '';
                         $scope.$$childHead.payment.note = '';
@@ -210,6 +173,15 @@ angular.module('mean.payments').controller('PaymentsController', ['$scope', '$ht
 
         $scope.hidePayment = function(payment){
             payment.show = false;
+            if(payment.member._id)
+                payment.member = payment.member._id;
+            payment.$update(function(){
+                $scope.findPayments();
+            });
+        };
+
+        $scope.markPaid = function(payment){
+            payment.payment.status = 'settled';
             if(payment.member._id)
                 payment.member = payment.member._id;
             payment.$update(function(){
