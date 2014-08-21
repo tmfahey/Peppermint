@@ -64,6 +64,12 @@ exports.hook = function(req, res) {
       });
     }
     paymentHold = payments;
+
+    //if payment is settled, don't let a hook change status.
+    if(paymentHold.payment.status==='settled'){
+      paymentUpdate.status = settled;
+    }
+    
     paymentHold.payment = paymentUpdate;
 
     paymentHold.save(function(err) {
