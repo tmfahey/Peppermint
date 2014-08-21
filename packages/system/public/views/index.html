@@ -130,8 +130,14 @@
                   <td>{{payment.payment.status}}</td>
                 </tr>
                 <tr ng-show="showRow" >
-                  <td colspan='5'>
+                  <td colspan='4' ng-show="payment.payment.status==='pending'">
                    Note: {{payment.payment.note}}
+                  </td>
+                  <td colspan='5' ng-show="payment.payment.status==='settled'">
+                   Note: {{payment.payment.note}}
+                  </td>
+                  <td colspan='1' ng-show="payment.payment.status==='pending'">
+                   <button class="btn btn-success" ng-click="markPaid(payment)">Mark Paid</button>
                   </td>
                   <td colspan='1'>
                    <button class="btn btn-default" ng-confirm-click="Are you sure you want to delete this payment? If deleted Peppermint will not know it ever existed." confirmed-click="deletePayment(payment)">Delete</button>
